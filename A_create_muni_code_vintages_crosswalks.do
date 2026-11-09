@@ -22,6 +22,14 @@
 	The pairwise files are then chained into one wide crosswalk,
 	crosswalks/muni_code_multiple_vintages.dta, onto which the Bhuller
 	(2009) labor-market regions are merged.
+
+	Labor-market regions:
+	Bhuller, M. S. (2009). Inndeling av Norge i arbeidsmarkedsregioner.
+	Notater 2009/24, Statistisk sentralbyrå (Statistics Norway).
+	https://www.ssb.no/arbeid-og-lonn/artikler-og-publikasjoner/inndeling-av-norge-i-arbeidsmarkedsregioner
+
+	Requires muni_to_Bhuller_LMAs.dta, created by A1 (A0_main.do runs
+	both in order). Finally, every output is also exported to csv/.
 */
 
 *** Value label for the change_type_<old>_<new> variable added to every
@@ -827,6 +835,25 @@ foreach file in `files' {
 	
 	save "crosswalks/`file'", replace
 	restore
+}
+
+clear
+
+******************************************************************************
+*** Export every output to CSV (numeric change_type codes, no value labels;
+*	see README for the code definitions). Municipality codes are strings with
+*	leading zeros, so read them as text in other software.
+
+capture mkdir "csv"
+
+use "muni_to_Bhuller_LMAs", clear
+export delimited using "csv/muni_to_Bhuller_LMAs.csv", nolabel replace
+
+local files : dir "crosswalks/" files "*.dta"
+foreach file of local files {
+	local stem = subinstr("`file'", ".dta", "", .)
+	use "crosswalks/`file'", clear
+	export delimited using "csv/`stem'.csv", nolabel replace
 }
 
 clear

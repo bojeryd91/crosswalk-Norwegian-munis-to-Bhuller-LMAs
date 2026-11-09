@@ -1,13 +1,20 @@
 
-*** Bhuller seems to use Kommuneinndelning 2008
+/*
+	A1: Assign each 2008 municipality to its Bhuller (2009) labor market
+	region (arbeidsmarkedsregion).
 
-*** Crosswalk built directly from the full set of 2008 municipality codes
-*** covered by Bhuller's labor market region definitions below. (Previously
-*** this list of municipalities was derived by reading in a person-level
-*** file matched to municipality of residence and collapsing to unique
-*** municipalities; now the full universe of 430 muni codes present in
-*** Kommuneinndeling 2008 is listed directly, since that is exactly the set
-*** of codes assigned a region below.)
+	Source:
+	Bhuller, M. S. (2009). Inndeling av Norge i arbeidsmarkedsregioner.
+	Notater 2009/24, Statistisk sentralbyrå (Statistics Norway).
+	https://www.ssb.no/arbeid-og-lonn/artikler-og-publikasjoner/inndeling-av-norge-i-arbeidsmarkedsregioner
+
+	Bhuller defines the 46 regions on Kommuneinndeling 2008. The input
+	block below lists all 430 municipality codes in that classification,
+	and each is assigned a region further down.
+
+	Output: muni_to_Bhuller_LMAs.dta, one row per 2008 municipality code.
+	Run before A2 (A0_main.do runs both in order).
+*/
 clear
 #delimit ;
 input str4 muni_code_2008;
