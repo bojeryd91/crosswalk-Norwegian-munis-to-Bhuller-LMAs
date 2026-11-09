@@ -289,9 +289,10 @@ replace arbmark = 83 if inlist(muni, "2003", "2002", "2024", "2025", ///
 *	as they are defined which is the same order as in the PDF by Bhuller (2009)
 preserve
 qui {
-	gunique arbmark
+	levelsof arbmark, local(lma_codes)
+	local n_lma : word count `lma_codes'
 	
-	forval iter = 1/`r(unique)' {
+	forval iter = 1/`n_lma' {
 		local kode = arbmark[1]
 		noi disp "Arbeidsmarkedsregion `kode'"
 		noi list muni if arbmark == `kode'
